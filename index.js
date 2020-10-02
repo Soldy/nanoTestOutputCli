@@ -82,17 +82,19 @@ const screenBase = function(resultIn, setupIn){
      */
     let processing = function (){
         let progress = result.all-(result.ok+result.fail+result.error);
-        ic.bar.update({
-            'name'   : 'progress',
-            'update' : {
-                '1' : progress,
-                '2' : result.ok,
-                '3' : result.fail,
-                '4' : result.error
-            }
-        });
-        ic.cursor.up(4);
-        ic.bar.draw('progress');
+        if (setup.get('progressBar') !== false){
+            ic.bar.update({
+                'name'   : 'progress',
+                'update' : {
+                    '1' : progress,
+                    '2' : result.ok,
+                    '3' : result.fail,
+                    '4' : result.error
+                }
+            });
+            ic.cursor.up(4);
+            ic.bar.draw('progress');
+        }
         if(timeout !== ''){
             clearTimeout(timeout);
             timeout='';
@@ -219,6 +221,8 @@ const screenBase = function(resultIn, setupIn){
     let init = function(){
         process.stderr.write('\x1B[?25l');
         ic.printLn('\n\n\n');
+        if (setup.get('progressBar') === false)
+           return true;
         ic.bar.init({
             'name':'progress',
             'max' : result.all 
