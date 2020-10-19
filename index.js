@@ -2,7 +2,7 @@
 const ic = new (require('interactiveConsole')).console();
 
 
-const screenBase = function(resultIn, setupIn){
+    const screenBase = function(setupIn){
     /*
      * @param {object} resultIn
      * @param {object} testrIn // Last test object
@@ -269,8 +269,6 @@ const screenBase = function(resultIn, setupIn){
         missing: 0
     };
     let setup = setupIn;
-    if(resultIn !== ' undefined')
-        result = resultIn;
     init();
 };
 
