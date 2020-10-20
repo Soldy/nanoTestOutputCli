@@ -2,7 +2,7 @@
 const ic = new (require('interactiveConsole')).console();
 
 
-    const screenBase = function(setupIn){
+const screenBase = function(resultIn, setupIn){
     /*
      * @param {object} resultIn
      * @param {object} testrIn // Last test object
@@ -81,7 +81,11 @@ const ic = new (require('interactiveConsole')).console();
      * @private
      */
     let processing = function (){
-        let progress = result.all-(result.ok+result.fail+result.error);
+        let progress = result.all-(
+            result.ok+
+            result.fail+
+            result.error
+        );
         if (setup.get('progressBar') !== false){
             ic.bar.update({
                 'name'   : 'progress',
@@ -222,7 +226,7 @@ const ic = new (require('interactiveConsole')).console();
         process.stderr.write('\x1B[?25l');
         ic.printLn('\n\n\n');
         if (setup.get('progressBar') === false)
-           return true;
+            return true;
         ic.bar.init({
             'name':'progress',
             'max' : result.all 
@@ -269,6 +273,8 @@ const ic = new (require('interactiveConsole')).console();
         missing: 0
     };
     let setup = setupIn;
+    if (typeof resultIn !== 'undefined')
+        result = resultIn;
     init();
 };
 
