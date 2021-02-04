@@ -1,7 +1,14 @@
+/*
+ *  @Soldy\nanoTestOutpitCli\2021.02.04\GPL3
+ */
 'use strict';
 const ic = new (require('interactiveConsole')).console();
 
-
+/*
+ * @param {object} resultIn 
+ * @param {setuprc} setupIn 
+ * @prototype
+ */
 const screenBase = function(resultIn, setupIn){
     /*
      * @param {object} resultIn
@@ -80,7 +87,7 @@ const screenBase = function(resultIn, setupIn){
     /*
      * @private
      */
-    let processing = function (){
+    const processing = function (){
         let progress = result.all-(
             result.ok+
             result.fail+
@@ -108,7 +115,7 @@ const screenBase = function(resultIn, setupIn){
      * @param {object}
      * @private
      */
-    let ok = function(test){
+    const ok = function(test){
         ic.printLn(
             ic.style(
                 '✓ ', 
@@ -120,7 +127,7 @@ const screenBase = function(resultIn, setupIn){
      * @param {object}
      * @private
      */
-    let fail = function (test){
+    const fail = function (test){
         ic.printLn(
             ic.style(
                 '✗ ', 
@@ -136,7 +143,7 @@ const screenBase = function(resultIn, setupIn){
      * @param {object}
      * @private
      */
-    let error = function (test) {
+    const error = function (test) {
         ic.printLn(
             ic.style(
                 '! ', 
@@ -148,7 +155,7 @@ const screenBase = function(resultIn, setupIn){
      * @param {object}
      * @private
      */
-    let missing = function (test){
+    const missing = function (test){
         ic.printLn(
             ic.style(
                 '! ', 
@@ -160,7 +167,7 @@ const screenBase = function(resultIn, setupIn){
      * @param {object}
      * @private
      */
-    let debug = function(debugIn){
+    const debug = function(debugIn){
         ic.printLn('====');
         let lines = debugIn.stack.split('\n');
         let first = lines[0].split(':');
@@ -222,7 +229,7 @@ const screenBase = function(resultIn, setupIn){
     /*
      * @private
      */
-    let init = function(){
+    const init = function(){
         process.stderr.write('\x1B[?25l');
         ic.printLn('\n\n\n');
         if (setup.get('progressBar') === false)
@@ -272,10 +279,14 @@ const screenBase = function(resultIn, setupIn){
         error: 0,
         missing: 0
     };
-    let setup = setupIn;
+    /*
+     * @private
+     * @var {setuprc}
+     */
+    const setup = setupIn;
     if (typeof resultIn !== 'undefined')
         result = resultIn;
     init();
 };
 
-exports.screenBase=screenBase;
+exports.base=screenBase;

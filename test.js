@@ -45,5 +45,5 @@ const setupTest = new setupBase({
 setupTest.setup({
     'progressBar':false
 })
-const screen = new (require('./index.js')).screenBase({},setupTest);
+const screen = new (require('./index.js')).base({},setupTest);
 nanoTest.run();
