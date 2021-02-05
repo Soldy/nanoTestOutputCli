@@ -2,7 +2,9 @@
  *  @Soldy\nanoTestOutpitCli\2021.02.04\GPL3
  */
 'use strict';
-const ic = new (require('interactiveConsole')).console();
+const styler = new (require('consolestylerc')).base();
+const stdio = new (require('consolestdiorc')).base();
+const bar = new (require('consolebarrc')).base();
 
 /*
  * @param {object} resultIn 
@@ -33,7 +35,7 @@ const screenBase = function(resultIn, setupIn){
         if(debugs.length >0){
             for(let i in debugs)
                 debug(debugs[i]);
-            ic.printLn('============');
+            stdio.printLn('============');
         }
         for(let i in tests)
             if(tests[i].result === 1){
@@ -46,32 +48,32 @@ const screenBase = function(resultIn, setupIn){
                 missing(tests[i]);
             }
 
-        ic.printLn(
+        stdio.printLn(
             'all : ' +  
-            ic.style(
+            styler.style(
                 result.all.toString(), 
                 {color: 'gray'}
             )+ ' | ok : ' +  
-            ic.style(
+            styler.style(
                 result.ok.toString(), 
                 {color: 'green'}
             )+ ' | failed : ' + 
-            ic.style(
+            styler.style(
                 result.fail.toString(),
                 {color: 'red'} 
             )+ ' | error : ' + 
-            ic.style(
+            styler.style(
                 result.error.toString(), 
                 {color: 'yellow'} 
             )+ ' | missing : ' + 
-            ic.style(
+            styler.style(
                 result.missing.toString(),
                 {
                     color: 'blue'
                 }
             )
         );
-        ic.printLn('test time : '+result.time+'ms');
+        stdio.printLn('test time : '+result.time+'ms');
         process.stderr.write('\x1B[?25h');
     };
     /*
@@ -94,7 +96,7 @@ const screenBase = function(resultIn, setupIn){
             result.error
         );
         if (setup.get('progressBar') !== false){
-            ic.bar.update({
+            bar.update({
                 'name'   : 'progress',
                 'update' : {
                     '1' : progress,
@@ -103,8 +105,8 @@ const screenBase = function(resultIn, setupIn){
                     '4' : result.error
                 }
             });
-            ic.cursor.up(4);
-            ic.bar.draw('progress');
+            stdio.cursorUp(4);
+            bar.draw('progress');
         }
         if(timeout !== ''){
             clearTimeout(timeout);
@@ -116,8 +118,8 @@ const screenBase = function(resultIn, setupIn){
      * @private
      */
     const ok = function(test){
-        ic.printLn(
-            ic.style(
+        stdio.printLn(
+            styler.style(
                 '✓ ', 
                 {color: 'green'}
             ) + test.name + ' : ok -- '  + test.time + ' ms '
@@ -128,8 +130,8 @@ const screenBase = function(resultIn, setupIn){
      * @private
      */
     const fail = function (test){
-        ic.printLn(
-            ic.style(
+        stdio.printLn(
+            styler.style(
                 '✗ ', 
                 {color: 'red'}
             ) + test.name + 
@@ -144,8 +146,8 @@ const screenBase = function(resultIn, setupIn){
      * @private
      */
     const error = function (test) {
-        ic.printLn(
-            ic.style(
+        stdio.printLn(
+            styler.style(
                 '! ', 
                 {color: 'yellow'}
             ) + test.name + ' : --- error'
@@ -156,8 +158,8 @@ const screenBase = function(resultIn, setupIn){
      * @private
      */
     const missing = function (test){
-        ic.printLn(
-            ic.style(
+        stdio.printLn(
+            styler.style(
                 '! ', 
                 {color: 'blue'}
             ) + test.name + ' : --- missing'
@@ -168,11 +170,11 @@ const screenBase = function(resultIn, setupIn){
      * @private
      */
     const debug = function(debugIn){
-        ic.printLn('====');
+        stdio.printLn('====');
         let lines = debugIn.stack.split('\n');
         let first = lines[0].split(':');
-        ic.printLn(
-            ic.style(
+        stdio.printLn(
+            styler.style(
                 first[0],
                 {
                     color: 'yellow'
@@ -184,17 +186,17 @@ const screenBase = function(resultIn, setupIn){
         if (setup.get('debugPrint') === 'short'){
             let pieces = lines[1].split(':');
             tree = '┗━ ';
-            ic.printLn(
+            stdio.printLn(
                 pieces[0]
                     .replace('   at ', tree)
                     .replace(process.cwd()+'/', ' ')+' | '+
-                ic.style(
+                styler.style(
                     parseInt(pieces[1]).toString(),
                     {
                         color : 'cyan'
                     }
                 )+':'+
-                ic.style(
+                styler.style(
                     parseInt(pieces[2]).toString(),
                     {
                         color : 'cyan'
@@ -206,17 +208,17 @@ const screenBase = function(resultIn, setupIn){
                 let pieces = lines[i].split(':');
                 if(i === lines.length-1)
                     tree = '┗━ ';
-                ic.printLn(
+                stdio.printLn(
                     pieces[0]
                         .replace('   at ', tree)
                         .replace(process.cwd()+'/', ' ')+' | '+
-                    ic.style(
+                    styler.style(
                         parseInt(pieces[1]).toString(),
                         {
                             color : 'cyan'
                         }
                     )+':'+
-                    ic.style(
+                    styler.style(
                         parseInt(pieces[2]).toString(),
                         {
                             color : 'cyan'
@@ -231,32 +233,32 @@ const screenBase = function(resultIn, setupIn){
      */
     const init = function(){
         process.stderr.write('\x1B[?25l');
-        ic.printLn('\n\n\n');
+        stdio.printLn('\n\n\n');
         if (setup.get('progressBar') === false)
             return true;
-        ic.bar.init({
+        bar.init({
             'name':'progress',
             'max' : result.all 
         });
-        ic.bar.addLine({
+        bar.addLine({
             'bar'         : 'progress',
             'id'          : '1',
             'title'       : 'not tested',
             'color'       : 'blue'
         });
-        ic.bar.addLine({
+        bar.addLine({
             'bar'    : 'progress',
             'id'     : '2',
             'title'  : 'ok',
             'color'  : 'green'
         });
-        ic.bar.addLine({
+        bar.addLine({
             'bar'    : 'progress',
             'id'     : '3',
             'title'  : 'failed',
             'color'  : 'red'
         });
-        ic.bar.addLine({
+        bar.addLine({
             'bar'    : 'progress',
             'id'     : '4',
             'title'  : 'error',
