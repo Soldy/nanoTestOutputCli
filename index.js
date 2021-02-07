@@ -106,7 +106,7 @@ const screenBase = function(resultIn, setupIn){
                 }
             });
             stdio.cursorUp(4);
-            stdio.printLn(
+            stdio.print(
                 bar.draw('progress')
             );
         }
@@ -266,7 +266,7 @@ const screenBase = function(resultIn, setupIn){
             'title'  : 'error',
             'color'  : 'yellow'
         });
-        stdio.printLn(
+        stdio.print(
              bar.draw('progress')
         );
     };
