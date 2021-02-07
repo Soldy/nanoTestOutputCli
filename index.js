@@ -74,7 +74,7 @@ const screenBase = function(resultIn, setupIn){
             )
         );
         stdio.printLn('test time : '+result.time+'ms');
-        process.stderr.write('\x1B[?25h');
+//        process.stderr.write('\x1B[?25h');
     };
     /*
      * @private
@@ -106,7 +106,9 @@ const screenBase = function(resultIn, setupIn){
                 }
             });
             stdio.cursorUp(4);
-            bar.draw('progress');
+            stdio.printLn(
+                bar.draw('progress')
+            );
         }
         if(timeout !== ''){
             clearTimeout(timeout);
@@ -232,7 +234,7 @@ const screenBase = function(resultIn, setupIn){
      * @private
      */
     const init = function(){
-        process.stderr.write('\x1B[?25l');
+//        process.stderr.write('\x1B[?25l');
         stdio.printLn('\n\n\n');
         if (setup.get('progressBar') === false)
             return true;
@@ -264,6 +266,9 @@ const screenBase = function(resultIn, setupIn){
             'title'  : 'error',
             'color'  : 'yellow'
         });
+        stdio.printLn(
+             bar.draw('progress')
+        );
     };
     /*
      * @private
