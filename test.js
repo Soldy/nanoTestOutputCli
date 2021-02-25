@@ -1,5 +1,5 @@
 
-const setupBase = (require('setuprc')).setupBase;
+const setupBase = (require('setuprc')).base;
 const nanoTest  = new (require('nanoTest')).test({
     'debugPrint' : 'short'
 });
