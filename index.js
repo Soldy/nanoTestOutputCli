@@ -2,16 +2,16 @@
  *  @Soldy\nanoTestOutpitCli\2021.02.04\GPL3
  */
 'use strict';
-const styler = new (require('consolestylerc')).base();
-const stdio = new (require('consolestdiorc')).base();
-const bar = new (require('consolebarrc')).base();
+const $styler = new (require('consolestylerc')).base();
+const $stdio = new (require('consolestdiorc')).base();
+const $bar = new (require('consolebarrc')).base();
 
 /*
  * @param {object} resultIn 
  * @param {setuprc} setupIn 
  * @prototype
  */
-const screenBase = function(resultIn, setupIn){
+const screenBase = function(result_in,  setup_in){
     /*
      * @param {object} resultIn
      * @param {object} testrIn // Last test object
@@ -19,109 +19,113 @@ const screenBase = function(resultIn, setupIn){
      * @public
      * boolean
      */
-    this.change = function(resultIn,testIn){
-        result = resultIn;
-        processing();
-        if(typeof testIn !== 'undefined'){
-            tests.push(testIn);
-            if(testIn.error !== false)
-                debugs.push(testIn.error);
+    this.change = function(result_in,test_in){
+        _result = result_in;
+        _processing();
+        if(typeof test_in !== 'undefined'){
+            _tests.push(test_in);
+            if(test_in.error !== false)
+                _debugs.push(test_in.error);
         }
     };
     /*
      * @public
      */
     this.end = function(){
-        if(debugs.length >0){
-            for(let i in debugs)
-                debug(debugs[i]);
-            stdio.printLn('============');
+        if(_debugs.length >0){
+            for(let i of _debugs)
+                _debug(i);
+            $stdio.printLn('============');
         }
-        for(let i in tests)
-            if(tests[i].result === 1){
-                ok(tests[i]);
-            }else if(tests[i].result === 2){
-                fail(tests[i]);
-            }else if(tests[i].result === 3){
-                error(tests[i]);
-            }else if(tests[i].result === 4){
-                missing(tests[i]);
+        for(let i of _tests)
+            if(i.result === 1){
+                _ok(i);
+            }else if(i.result === 2){
+                _fail(i);
+            }else if(i.result === 3){
+                _error(i);
+            }else if(i.result === 4){
+                _missing(i);
             }
 
-        stdio.printLn(
+        $stdio.printLn(
             'all : ' +  
             styler.style(
-                result.all.toString(), 
+                _result.all.toString(), 
                 {color: 'gray'}
             )+ ' | ok : ' +  
             styler.style(
-                result.ok.toString(), 
+                _result.ok.toString(), 
                 {color: 'green'}
             )+ ' | failed : ' + 
             styler.style(
-                result.fail.toString(),
+                _result.fail.toString(),
                 {color: 'red'} 
             )+ ' | error : ' + 
             styler.style(
-                result.error.toString(), 
+                _result.error.toString(), 
                 {color: 'yellow'} 
             )+ ' | missing : ' + 
             styler.style(
-                result.missing.toString(),
+                _result.missing.toString(),
                 {
                     color: 'blue'
                 }
             )
         );
-        stdio.printLn('test time : '+result.time+'ms');
+        stdio.printLn(
+           'test time : '+
+            _result.time+
+            'ms'
+        );
 //        process.stderr.write('\x1B[?25h');
     };
     /*
      * @private
      * @var {array}
      */
-    let debugs = [];
+    let _debugs = [];
     /*
      * @private
      * @var {array}
      */
-    let tests = [];
+    let _tests = [];
     /*
      * @private
      */
-    const processing = function (){
-        let progress = result.all-(
-            result.ok+
-            result.fail+
-            result.error
+    const _processing = function (){
+        let progress = _result.all-(
+            _result.ok+
+            _result.fail+
+            _result.error
         );
-        if (setup.get('progressBar') !== false){
-            bar.update({
+        if (_setup.get('progressBar') !== false){
+            $bar.update({
                 'name'   : 'progress',
                 'update' : {
-                    '1' : progress,
-                    '2' : result.ok,
-                    '3' : result.fail,
-                    '4' : result.error
+                    '1' : _progress,
+                    '2' : _result.ok,
+                    '3' : _result.fail,
+                    '4' : _result.error
                 }
             });
-            stdio.cursorUp(4);
-            stdio.print(
-                bar.draw('progress')
+            $stdio.cursorUp(4);
+            $stdio.print(
+                $bar.draw('progress')
             );
         }
-        if(timeout !== ''){
-            clearTimeout(timeout);
-            timeout='';
+        if(_timeout !== ''){
+            clearTimeout(_timeout);
+            _timeout='';
         }
     };
     /*
      * @param {object}
      * @private
      */
-    const ok = function(test){
-        stdio.printLn(
-            styler.style(
+    const _ok = function(test){
+        $stdio.printLn(
+            $styler.style(
                 '✓ ', 
                 {color: 'green'}
             ) + test.name + ' : ok -- '  + test.time + ' ms '
@@ -131,9 +135,9 @@ const screenBase = function(resultIn, setupIn){
      * @param {object}
      * @private
      */
-    const fail = function (test){
-        stdio.printLn(
-            styler.style(
+    const _fail = function (test){
+        $stdio.printLn(
+            $styler.style(
                 '✗ ', 
                 {color: 'red'}
             ) + test.name + 
@@ -147,9 +151,9 @@ const screenBase = function(resultIn, setupIn){
      * @param {object}
      * @private
      */
-    const error = function (test) {
-        stdio.printLn(
-            styler.style(
+    const _error = function (test) {
+        $stdio.printLn(
+            $styler.style(
                 '! ', 
                 {color: 'yellow'}
             ) + test.name + ' : --- error'
@@ -159,9 +163,9 @@ const screenBase = function(resultIn, setupIn){
      * @param {object}
      * @private
      */
-    const missing = function (test){
-        stdio.printLn(
-            styler.style(
+    const _missing = function (test){
+        $stdio.printLn(
+            $styler.style(
                 '! ', 
                 {color: 'blue'}
             ) + test.name + ' : --- missing'
@@ -171,12 +175,12 @@ const screenBase = function(resultIn, setupIn){
      * @param {object}
      * @private
      */
-    const debug = function(debugIn){
-        stdio.printLn('====');
-        let lines = debugIn.stack.split('\n');
+    const _debug = function(debug_in){
+        $stdio.printLn('====');
+        let lines = debug_in.stack.split('\n');
         let first = lines[0].split(':');
-        stdio.printLn(
-            styler.style(
+        $stdio.printLn(
+            $styler.style(
                 first[0],
                 {
                     color: 'yellow'
@@ -185,20 +189,20 @@ const screenBase = function(resultIn, setupIn){
             first[1]
         );
         let tree = '┣━ ';
-        if (setup.get('debugPrint') === 'short'){
+        if (_setup.get('debugPrint') === 'short'){
             let pieces = lines[1].split(':');
             tree = '┗━ ';
-            stdio.printLn(
+            $stdio.printLn(
                 pieces[0]
                     .replace('   at ', tree)
                     .replace(process.cwd()+'/', ' ')+' | '+
-                styler.style(
+                $styler.style(
                     parseInt(pieces[1]).toString(),
                     {
                         color : 'cyan'
                     }
                 )+':'+
-                styler.style(
+                $styler.style(
                     parseInt(pieces[2]).toString(),
                     {
                         color : 'cyan'
@@ -210,17 +214,17 @@ const screenBase = function(resultIn, setupIn){
                 let pieces = lines[i].split(':');
                 if(i === lines.length-1)
                     tree = '┗━ ';
-                stdio.printLn(
+                $stdio.printLn(
                     pieces[0]
                         .replace('   at ', tree)
                         .replace(process.cwd()+'/', ' ')+' | '+
-                    styler.style(
+                    $styler.style(
                         parseInt(pieces[1]).toString(),
                         {
                             color : 'cyan'
                         }
                     )+':'+
-                    styler.style(
+                    $styler.style(
                         parseInt(pieces[2]).toString(),
                         {
                             color : 'cyan'
@@ -233,53 +237,53 @@ const screenBase = function(resultIn, setupIn){
     /*
      * @private
      */
-    const init = function(){
+    const _init = function(){
 //        process.stderr.write('\x1B[?25l');
-        stdio.printLn('\n\n\n');
-        if (setup.get('progressBar') === false)
+        $stdio.printLn('\n\n\n');
+        if (_setup.get('progressBar') === false)
             return true;
-        bar.init({
+        i$bar.init({
             'name':'progress',
             'max' : result.all 
         });
-        bar.addLine({
+        $bar.addLine({
             'bar'         : 'progress',
             'id'          : '1',
             'title'       : 'not tested',
             'color'       : 'blue'
         });
-        bar.addLine({
+        $bar.addLine({
             'bar'    : 'progress',
             'id'     : '2',
             'title'  : 'ok',
             'color'  : 'green'
         });
-        bar.addLine({
+        $bar.addLine({
             'bar'    : 'progress',
             'id'     : '3',
             'title'  : 'failed',
             'color'  : 'red'
         });
-        bar.addLine({
+        $bar.addLine({
             'bar'    : 'progress',
             'id'     : '4',
             'title'  : 'error',
             'color'  : 'yellow'
         });
-        stdio.print(
-             bar.draw('progress')
+        $stdio.print(
+             $bar.draw('progress')
         );
     };
     /*
      * @private
      * @var {string}
      */
-    let timeout = '';
+    let _timeout = '';
     /*
      * @private
      * @var {object}
      */
-    let result = {
+    let _result = {
         all: 0,
         ok: 0,
         fail: 0,
@@ -290,10 +294,10 @@ const screenBase = function(resultIn, setupIn){
      * @private
      * @var {setuprc}
      */
-    const setup = setupIn;
-    if (typeof resultIn !== 'undefined')
-        result = resultIn;
-    init();
+    const _setup = setup_in;
+    if (typeof result_in !== 'undefined')
+        _result = result_in;
+    _init();
 };
 
 exports.base=screenBase;
