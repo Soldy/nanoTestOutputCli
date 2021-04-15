@@ -50,35 +50,35 @@ const screenBase = function(result_in,  setup_in){
 
         $stdio.printLn(
             'all : ' +  
-            styler.style(
+            $styler.style(
                 _result.all.toString(), 
                 {color: 'gray'}
             )+ ' | ok : ' +  
-            styler.style(
+            $styler.style(
                 _result.ok.toString(), 
                 {color: 'green'}
             )+ ' | failed : ' + 
-            styler.style(
+            $styler.style(
                 _result.fail.toString(),
                 {color: 'red'} 
             )+ ' | error : ' + 
-            styler.style(
+            $styler.style(
                 _result.error.toString(), 
                 {color: 'yellow'} 
             )+ ' | missing : ' + 
-            styler.style(
+            $styler.style(
                 _result.missing.toString(),
                 {
                     color: 'blue'
                 }
             )
         );
-        stdio.printLn(
-           'test time : '+
+        $stdio.printLn(
+            'test time : '+
             _result.time+
             'ms'
         );
-//        process.stderr.write('\x1B[?25h');
+        //        process.stderr.write('\x1B[?25h');
     };
     /*
      * @private
@@ -94,7 +94,7 @@ const screenBase = function(result_in,  setup_in){
      * @private
      */
     const _processing = function (){
-        let progress = _result.all-(
+        let _progress = _result.all-(
             _result.ok+
             _result.fail+
             _result.error
@@ -238,40 +238,35 @@ const screenBase = function(result_in,  setup_in){
      * @private
      */
     const _init = function(){
-//        process.stderr.write('\x1B[?25l');
+        //        process.stderr.write('\x1B[?25l');
         $stdio.printLn('\n\n\n');
         if (_setup.get('progressBar') === false)
             return true;
-        i$bar.init({
-            'name':'progress',
-            'max' : result.all 
+        $bar.setup({
+            'max' : _result.all
         });
         $bar.addLine({
-            'bar'         : 'progress',
             'id'          : '1',
             'title'       : 'not tested',
             'color'       : 'blue'
         });
         $bar.addLine({
-            'bar'    : 'progress',
             'id'     : '2',
             'title'  : 'ok',
             'color'  : 'green'
         });
         $bar.addLine({
-            'bar'    : 'progress',
             'id'     : '3',
             'title'  : 'failed',
             'color'  : 'red'
         });
         $bar.addLine({
-            'bar'    : 'progress',
             'id'     : '4',
             'title'  : 'error',
             'color'  : 'yellow'
         });
         $stdio.print(
-             $bar.draw('progress')
+            $bar.draw()
         );
     };
     /*
