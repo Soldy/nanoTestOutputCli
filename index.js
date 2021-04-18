@@ -99,7 +99,7 @@ const screenBase = function(result_in,  setup_in){
             _result.fail+
             _result.error
         );
-        if (_setup.get('progressBar') !== false){
+        if (_setup.get('progressBar') === true){
             $bar.update({
                 'name'   : 'progress',
                 'update' : {
@@ -240,27 +240,27 @@ const screenBase = function(result_in,  setup_in){
     const _init = function(){
         //        process.stderr.write('\x1B[?25l');
         $stdio.printLn('\n\n\n');
-        if (_setup.get('progressBar') === false)
+        if (_setup.get('progressBar') !== true)
             return true;
         $bar.setup({
             'max' : _result.all
         });
-        $bar.addLine({
+        $bar.add({
             'id'          : '1',
             'title'       : 'not tested',
             'color'       : 'blue'
         });
-        $bar.addLine({
+        $bar.add({
             'id'     : '2',
             'title'  : 'ok',
             'color'  : 'green'
         });
-        $bar.addLine({
+        $bar.add({
             'id'     : '3',
             'title'  : 'failed',
             'color'  : 'red'
         });
-        $bar.addLine({
+        $bar.add({
             'id'     : '4',
             'title'  : 'error',
             'color'  : 'yellow'
