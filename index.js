@@ -120,15 +120,47 @@ const screenBase = function(result_in,  setup_in){
         }
     };
     /*
+     * @param {integer}
+     * @private
+     * @return {string}
+     */
+    const _time = function(time){
+        let color = 'blue';
+        if(time > 500){
+            color = 'red';
+        }else if(time > 300){
+            color = 'magenta';
+        }else if(time > 100){
+            color = 'yellow';
+        }else if(time > 50){
+            color = 'green';
+        }else if(time > 5){
+            color = 'cyan';
+        }
+        return $styler.style(
+            (
+                ' ( '+
+                time.toString()+
+                'ms )'
+            ),
+            {color}
+        );
+    };
+    /*
      * @param {object}
      * @private
      */
     const _ok = function(test){
         $stdio.printLn(
             $styler.style(
-                '✓ ', 
+                '  ✓ ', 
                 {color: 'green'}
-            ) + test.name + ' : ok -- '  + test.time + ' ms '
+            ) +
+            $styler.style(
+               test.name,
+                {color: 'grey'}
+            ) +
+            _time(test.time)
         );
     };
     /*
@@ -138,12 +170,16 @@ const screenBase = function(result_in,  setup_in){
     const _fail = function (test){
         $stdio.printLn(
             $styler.style(
-                '✗ ', 
+                '  ✗ ',
                 {color: 'red'}
-            ) + test.name + 
-                ' : ' + 
-                test.sample + 
-                '  --- value --- ' +
+            ) +
+            $styler.style(
+                test.name,
+                {color: 'magenta'}
+            ) +
+            ' : ' +
+            test.sample +
+            '  --- value --- ' +
             JSON.stringify(test.value)
         );
     };
@@ -154,9 +190,13 @@ const screenBase = function(result_in,  setup_in){
     const _error = function (test) {
         $stdio.printLn(
             $styler.style(
-                '! ', 
+                '  ! ',
                 {color: 'yellow'}
-            ) + test.name + ' : --- error'
+            ) +
+            $styler.style(
+                test.name,
+                {color: 'yellow'}
+            )
         );
     };
     /*
@@ -166,9 +206,13 @@ const screenBase = function(result_in,  setup_in){
     const _missing = function (test){
         $stdio.printLn(
             $styler.style(
-                '! ', 
+                '  ? ',
                 {color: 'blue'}
-            ) + test.name + ' : --- missing'
+            ) +
+            $styler.style(
+                test.name,
+                {color: 'cyan'}
+            )
         );
     };
     /*
