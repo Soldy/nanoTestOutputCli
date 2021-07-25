@@ -1,6 +1,6 @@
 {
   "name": "nano-test-output-cli",
-  "version": "0.9.9-beta21",
+  "version": "0.9.9-beta22",
   "description": "nanoTest cli output collection.",
   "main": "index.js",
   "scripts": {
