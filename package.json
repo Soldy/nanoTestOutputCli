@@ -1,6 +1,6 @@
 {
   "name": "nano-test-output-cli",
-  "version": "0.9.9-beta22",
+  "version": "0.9.9-beta23",
   "description": "nanoTest cli output collection.",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "consolebarrc": "^0.0.6",
-    "consolestdiorc": "^0.0.4-r2",
+    "consolestdiorc": "^0.0.4-r3",
     "consolestylerc": "^0.0.4"
   },
   "devDependencies": {
