@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "consolebarrc": "^0.0.6",
-    "consolestdiorc": "^0.0.4-r3",
+    "consolestdiorc": "^0.0.5",
     "consolestylerc": "^0.0.4"
   },
   "devDependencies": {
