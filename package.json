@@ -15,9 +15,6 @@
     "consolestdiorc": "0.0.5",
     "consolestylerc": "0.0.4"
   },
-  "devDependencies": {
-    "nanoTest": "^0.9.9-beta25"
-  },
   "keywords": [],
   "author": "Soldy <npmjs@gidigi.com> (http://gidigi.com)",
   "license": "GPL-3.0-or-later",
