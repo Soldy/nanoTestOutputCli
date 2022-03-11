@@ -99,7 +99,7 @@ const screenBase = function(result_in,  setup_in){
             _result.fail+
             _result.error
         );
-        if (_setup.get('progressBar') === true){
+        if (_setup.get('progress_bar') === true){
             $bar.update({
                 'name'   : 'progress',
                 'update' : {
@@ -233,7 +233,7 @@ const screenBase = function(result_in,  setup_in){
             first[1]
         );
         let tree = '┣━ ';
-        if (_setup.get('debugPrint') === 'short'){
+        if (_setup.get('debug_print') === 'short'){
             let pieces = lines[1].split(':');
             tree = '┗━ ';
             $stdio.printLn(
@@ -284,15 +284,15 @@ const screenBase = function(result_in,  setup_in){
     const _init = function(){
         //        process.stderr.write('\x1B[?25l');
         $stdio.printLn('\n\n\n');
-        if (_setup.get('progressBar') !== true)
+        if (_setup.get('progress_bar') === false)
             return true;
         $bar.setup({
             'max' : _result.all
         });
         $bar.add({
-            'id'          : '1',
-            'title'       : 'not tested',
-            'color'       : 'blue'
+            'id'     : '1',
+            'title'  : 'not tested',
+            'color'  : 'blue'
         });
         $bar.add({
             'id'     : '2',

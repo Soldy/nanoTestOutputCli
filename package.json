@@ -1,6 +1,6 @@
 {
   "name": "nano-test-output-cli",
-  "version": "0.9.9-beta23",
+  "version": "0.9.9-beta24",
   "description": "nanoTest cli output collection.",
   "main": "index.js",
   "scripts": {
@@ -11,12 +11,12 @@
     "url": "https://github.com/Soldy/nanoTestOutputCli"
   },
   "dependencies": {
-    "consolebarrc": "^0.0.6",
-    "consolestdiorc": "^0.0.5",
-    "consolestylerc": "^0.0.4"
+    "consolebarrc": "0.0.7",
+    "consolestdiorc": "0.0.5",
+    "consolestylerc": "0.0.4"
   },
   "devDependencies": {
-    "nanoTest": "^0.9.9-beta21"
+    "nanoTest": "^0.9.9-beta25"
   },
   "keywords": [],
   "author": "Soldy <npmjs@gidigi.com> (http://gidigi.com)",
