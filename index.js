@@ -381,9 +381,9 @@ const screenBase = function(result_in,  setup_in){
      */
     const _init = function(){
         //        process.stderr.write('\x1B[?25l');
-        $stdio.printLn('\n\n\n');
         if (_setup.get('progress_bar') === false)
             return true;
+        $stdio.printLn('\n\n\n');
         $bar.setup({
             'max' : _result.all
         });
