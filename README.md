@@ -9,3 +9,4 @@ Command line output manager for nano test.
    |--------------------|---------|---------|-----------------------------
    | ```progress_bar``` | boolean |   true  |  enable/disable progress bar
    | ```serialize```    | boolean |   false |  enable test list index visualization
+   | ```debug_print```  | string  |   long  |  error message format options : short,long

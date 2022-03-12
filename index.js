@@ -15,18 +15,11 @@ const screenBase = function(result_in,  setup_in){
     /*
      * @param {object} resultIn
      * @param {object} testrIn // Last test object
-     * @param {any} sample
      * @public
      * boolean
      */
     this.change = function(result_in,test_in){
-        _result = result_in;
-        _processing();
-        if(typeof test_in !== 'undefined'){
-            _tests.push(test_in);
-            if(test_in.error !== false)
-                _debugs.push(test_in.error);
-        }
+        return _change(result_in, test_in);
     };
     /*
      * @public
@@ -64,6 +57,21 @@ const screenBase = function(result_in,  setup_in){
         fail: 0,
         error: 0,
         missing: 0
+    };
+    /*
+     * @param {object} resultIn
+     * @param {object} testrIn // Last test object
+     * @private
+     * boolean
+     */
+    const _change = function(result_in,test_in){
+        _result = result_in;
+        _processing();
+        if(typeof test_in !== 'undefined'){
+            _tests.push(test_in);
+            if(test_in.error !== false)
+                _debugAdd(test_in);
+        }
     };
     /*
      * @private
@@ -214,8 +222,19 @@ const screenBase = function(result_in,  setup_in){
      * @param {object}
      * @private
      */
+    const _debugAdd = function(test_in){
+        if(test_in.error !== false)
+             _debugs.push({
+                 'serial' : (_tests.length - 1),
+                 'name'   : test_in.name,
+                 'error'  : test_in.error
+             });
+    }
+    /*
+     * @param {object}
+     * @private
+     */
     const _debug = function(debug_in){
-        $stdio.printLn('====');
         let lines = debug_in.stack.split('\n');
         let first = lines[0].split(':');
         $stdio.printLn(
@@ -277,8 +296,16 @@ const screenBase = function(result_in,  setup_in){
     */
     const _finalDebugList = function(){
         if(_debugs.length >0){
-            for(let i of _debugs)
-                _debug(i);
+            for(let i of _debugs){
+                $stdio.printLn('====');
+                $stdio.printLn(
+                    ' '+
+                    i.serial+
+                    '. '+
+                    i.name
+                );
+                _debug(i.error);
+            }
             $stdio.printLn('============');
         }
     }
