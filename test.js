@@ -175,4 +175,6 @@ screenSerial.change(
     $test_error
 );
 screenSerial.end();
+screenSerial.end(false);
+screenSerial.end(true);
 
