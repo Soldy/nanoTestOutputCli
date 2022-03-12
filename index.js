@@ -31,56 +31,8 @@ const screenBase = function(result_in,  setup_in){
     /*
      * @public
      */
-    this.end = function(){
-        if(_debugs.length >0){
-            for(let i of _debugs)
-                _debug(i);
-            $stdio.printLn('============');
-        }
-        _result_serial = 0;
-        for(let i of _tests){
-            _result_serial++;
-            if(i.result === 1){
-                _ok(i);
-            }else if(i.result === 2){
-                _fail(i);
-            }else if(i.result === 3){
-                _error(i);
-            }else if(i.result === 4){
-                _missing(i);
-            }
-        }
-        $stdio.printLn(
-            'all : ' +  
-            $styler.style(
-                _result.all.toString(), 
-                {color: 'gray'}
-            )+ ' | ok : ' +  
-            $styler.style(
-                _result.ok.toString(), 
-                {color: 'green'}
-            )+ ' | failed : ' + 
-            $styler.style(
-                _result.fail.toString(),
-                {color: 'red'} 
-            )+ ' | error : ' + 
-            $styler.style(
-                _result.error.toString(), 
-                {color: 'yellow'} 
-            )+ ' | missing : ' + 
-            $styler.style(
-                _result.missing.toString(),
-                {
-                    color: 'blue'
-                }
-            )
-        );
-        $stdio.printLn(
-            'test time : '+
-            _result.time+
-            'ms'
-        );
-        //        process.stderr.write('\x1B[?25h');
+    this.end = function(result){
+        return _end(result);
     };
     /*
      * @private
@@ -97,6 +49,22 @@ const screenBase = function(result_in,  setup_in){
      * @var {integer}
      */
     let _result_serial=0;
+    /*
+     * @private
+     * @var {string}
+     */
+    let _timeout = '';
+    /*
+     * @private
+     * @var {object}
+     */
+    let _result = {
+        all: 0,
+        ok: 0,
+        fail: 0,
+        error: 0,
+        missing: 0
+    };
     /*
      * @private
      */
@@ -304,7 +272,110 @@ const screenBase = function(result_in,  setup_in){
                 );
             }
     };
+    /*
+     * @private
+    */
+    const _finalDebugList = function(){
+        if(_debugs.length >0){
+            for(let i of _debugs)
+                _debug(i);
+            $stdio.printLn('============');
+        }
+    }
+    /*
+     * @private
+    */
+    const _finalTestList = function(){
+        _result_serial = 0;
+        for(let i of _tests){
+            _result_serial++;
+            if(i.result === 1){
+                _ok(i);
+            }else if(i.result === 2){
+                _fail(i);
+            }else if(i.result === 3){
+                _error(i);
+            }else if(i.result === 4){
+                _missing(i);
+            }
+        }
+    };
+    /*
+     * @private
+     *
+    */
+    const _finalResult = function(){
+        $stdio.printLn(
+            'all : ' +  
+            $styler.style(
+                _result.all.toString(), 
+                {color: 'gray'}
+            )+ ' | ok : ' +  
+            $styler.style(
+                _result.ok.toString(), 
+                {color: 'green'}
+            )+ ' | failed : ' + 
+            $styler.style(
+                _result.fail.toString(),
+                {color: 'red'} 
+            )+ ' | error : ' + 
+            $styler.style(
+                _result.error.toString(), 
+                {color: 'yellow'} 
+            )+ ' | missing : ' + 
+            $styler.style(
+                _result.missing.toString(),
+                {
+                    color: 'blue'
+                }
+            )
+        );
+    };
+    /*
+     * @param {boolean}
+     * @private
+     *
+    */
+    const _finalReport = function(result){
+        if (result === true)
+            return $stdio.printLn(
+                $styler.style(
+                    (
+                        'test passed ',
+                         _result.time+
+                        ' ms'
+                    ),
+                    {color: 'green'}
+                )
+            );
+        if (result === false)
+            return $stdio.printLn(
+                $styler.style(
+                    (
+                        'test failed ',
+                         _result.time+
+                        ' ms'
+                    ),
+                    {color: 'red'}
+                )
+            );
+        return $stdio.printLn(
+            'test time : '+
+            _result.time+
+            ' ms'
+        );
 
+
+    }
+    /*
+     * @private
+     */
+    const _end = function(result){
+         _finalDebugList();
+         _finalTestList();
+         _finalResult();
+         _finalReport(result);
+    }
     /*
      * @private
      */
@@ -339,22 +410,6 @@ const screenBase = function(result_in,  setup_in){
         $stdio.print(
             $bar.draw()
         );
-    };
-    /*
-     * @private
-     * @var {string}
-     */
-    let _timeout = '';
-    /*
-     * @private
-     * @var {object}
-     */
-    let _result = {
-        all: 0,
-        ok: 0,
-        fail: 0,
-        error: 0,
-        missing: 0
     };
     /*
      * @private

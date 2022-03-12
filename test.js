@@ -1,6 +1,7 @@
 
 const setupBase = (require('setuprc')).base;
 const $result = {
+   time: 1,
    all: 5,
    ok: 1,
    fail: 2,
