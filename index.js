@@ -37,7 +37,9 @@ const screenBase = function(result_in,  setup_in){
                 _debug(i);
             $stdio.printLn('============');
         }
-        for(let i of _tests)
+        _result_serial = 0;
+        for(let i of _tests){
+            _result_serial++;
             if(i.result === 1){
                 _ok(i);
             }else if(i.result === 2){
@@ -47,7 +49,7 @@ const screenBase = function(result_in,  setup_in){
             }else if(i.result === 4){
                 _missing(i);
             }
-
+        }
         $stdio.printLn(
             'all : ' +  
             $styler.style(
@@ -90,6 +92,23 @@ const screenBase = function(result_in,  setup_in){
      * @var {array}
      */
     let _tests = [];
+    /*
+     * @private
+     * @var {integer}
+     */
+    let _result_serial=0;
+    /*
+     * @private
+     */
+    const _resultSerial = function(){
+        if (_setup.get('serialize') !== true)
+            return '';
+        return (
+            ' '+
+            _result_serial.toString()+
+            '.'
+        );
+    }
     /*
      * @private
      */
@@ -152,6 +171,7 @@ const screenBase = function(result_in,  setup_in){
      */
     const _ok = function(test){
         $stdio.printLn(
+            _resultSerial()+
             $styler.style(
                 '  ✓ ', 
                 {color: 'green'}
@@ -168,7 +188,8 @@ const screenBase = function(result_in,  setup_in){
      * @private
      */
     const _fail = function (test){
-        let out =( 
+        let out =(
+            _resultSerial()+
             $styler.style(
                 '  ✗ ',
                 {color: 'red'}
@@ -193,6 +214,7 @@ const screenBase = function(result_in,  setup_in){
      */
     const _error = function (test) {
         $stdio.printLn(
+            _resultSerial()+
             $styler.style(
                 '  ! ',
                 {color: 'yellow'}
@@ -209,6 +231,7 @@ const screenBase = function(result_in,  setup_in){
      */
     const _missing = function (test){
         $stdio.printLn(
+            _resultSerial()+
             $styler.style(
                 '  ? ',
                 {color: 'blue'}

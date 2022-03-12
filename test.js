@@ -112,12 +112,18 @@ const setupTest = new setupBase({
         'exit_code_missing':{
             'type'    : 'bool',
             'default' : true
+        },
+        'serialize':{
+            'type'    : 'bool',
+            'default' : false
         }
 });
 
 setupTest.setup({
-    'progressBar':false
-})
+    'progress_bar':false
+});
+
+
 const screen = new (require('./index.js')).base($result, setupTest);
 screen.change(
     $result,
@@ -140,3 +146,32 @@ screen.change(
     $test_error
 );
 screen.end();
+
+setupTest.setup({
+    'serialize':true,
+    'progress_bar':true
+});
+const screenSerial = new (require('./index.js')).base($result, setupTest);
+
+screenSerial.change(
+    $result,
+    $test_ok
+);
+screenSerial.change(
+    $result,
+    $test_failed
+);
+screenSerial.change(
+    $result,
+    $test_failed_no_value
+);
+screenSerial.change(
+    $result,
+    $test_missing
+);
+screenSerial.change(
+    $result,
+    $test_error
+);
+screenSerial.end();
+
