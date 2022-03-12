@@ -1,9 +1,9 @@
 
 const setupBase = (require('setuprc')).base;
 const $result = {
-   all: 4,
+   all: 5,
    ok: 1,
-   fail: 1,
+   fail: 2,
    error: 1,
    missing: 1
 };
@@ -24,7 +24,7 @@ const $test_ok ={
             'willfail' : false
 };
 const $test_failed ={
-            'name'     : 'test ok',
+            'name'     : 'test failed',
             'test'     : ()=>{},
             'rule'     : "===",
             'sample'   : 0,
@@ -39,8 +39,24 @@ const $test_failed ={
             'debug'    : '',
             'willfail' : false
 };
+const $test_failed_no_value ={
+            'name'     : 'test failed no value',
+            'test'     : ()=>{},
+            'rule'     : "===",
+            'sample'   : 0,
+            'ready'    : false,
+            'startTime': 11111124,
+            'endTime'  : 11111125,
+            'time'     : 1,
+            'result'   : 2,
+            'error'    : false,
+            'value'    : 0,
+            'check'    : false,
+            'debug'    : '',
+            'willfail' : false
+};
 const $test_missing ={
-            'name'     : 'test ok',
+            'name'     : 'test missing',
             'test'     : ()=>{},
             'rule'     : "===",
             'sample'   : 0,
@@ -56,7 +72,7 @@ const $test_missing ={
             'willfail' : false
 };
 const $test_error ={
-            'name'     : 'test ok',
+            'name'     : 'test error',
             'test'     : ()=>{},
             'rule'     : "===",
             'sample'   : 0,
@@ -110,6 +126,10 @@ screen.change(
 screen.change(
     $result,
     $test_failed
+);
+screen.change(
+    $result,
+    $test_failed_no_value
 );
 screen.change(
     $result,

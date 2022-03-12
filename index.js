@@ -168,7 +168,7 @@ const screenBase = function(result_in,  setup_in){
      * @private
      */
     const _fail = function (test){
-        $stdio.printLn(
+        let out =( 
             $styler.style(
                 '  ✗ ',
                 {color: 'red'}
@@ -176,12 +176,16 @@ const screenBase = function(result_in,  setup_in){
             $styler.style(
                 test.name,
                 {color: 'magenta'}
-            ) +
-            ' : ' +
-            test.sample +
-            '  --- value --- ' +
-            JSON.stringify(test.value)
+            )
         );
+        if(JSON.stringify(test.sample) !== JSON.stringify(test.value))
+            out += (
+               ' : '+
+               test.sample +
+               '  --- value --- ' +
+               JSON.stringify(test.value)
+            );
+        $stdio.printLn(out );
     };
     /*
      * @param {object}
