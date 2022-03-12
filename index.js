@@ -341,7 +341,7 @@ const screenBase = function(result_in,  setup_in){
             return $stdio.printLn(
                 $styler.style(
                     (
-                        'test passed '+
+                        ' passed in '+
                          _result.time+
                         ' ms'
                     ),
@@ -352,7 +352,7 @@ const screenBase = function(result_in,  setup_in){
             return $stdio.printLn(
                 $styler.style(
                     (
-                        'test failed '+
+                        ' failed in '+
                          _result.time+
                         ' ms'
                     ),
