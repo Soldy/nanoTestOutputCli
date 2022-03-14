@@ -4,6 +4,7 @@
 'use strict';
 const $styler = new (require('consolestylerc')).base();
 const $stdio = new (require('consolestdiorc')).base();
+const $error = new (require('errorrc')).base();
 const $bar = new (require('consolebarrc')).base();
 
 /*
@@ -231,80 +232,24 @@ const screenBase = function(result_in,  setup_in){
              });
     }
     /*
-     * @param {object}
-     * @private
-     */
-    const _debug = function(debug_in){
-        let lines = debug_in.stack.split('\n');
-        let first = lines[0].split(':');
-        $stdio.printLn(
-            $styler.style(
-                first[0],
-                {
-                    color: 'yellow'
-                }
-            )+' : '+
-            first[1]
-        );
-        let tree = '┣━ ';
-        if (_setup.get('debug_print') === 'short'){
-            let pieces = lines[1].split(':');
-            tree = '┗━ ';
-            $stdio.printLn(
-                pieces[0]
-                    .replace('   at ', tree)
-                    .replace(process.cwd()+'/', ' ')+' | '+
-                $styler.style(
-                    parseInt(pieces[1]).toString(),
-                    {
-                        color : 'cyan'
-                    }
-                )+':'+
-                $styler.style(
-                    parseInt(pieces[2]).toString(),
-                    {
-                        color : 'cyan'
-                    }
-                )+' )'
-            );
-        }else 
-            for(let i = 1; lines.length > i ; i++){
-                let pieces = lines[i].split(':');
-                if(i === lines.length-1)
-                    tree = '┗━ ';
-                $stdio.printLn(
-                    pieces[0]
-                        .replace('   at ', tree)
-                        .replace(process.cwd()+'/', ' ')+' | '+
-                    $styler.style(
-                        parseInt(pieces[1]).toString(),
-                        {
-                            color : 'cyan'
-                        }
-                    )+':'+
-                    $styler.style(
-                        parseInt(pieces[2]).toString(),
-                        {
-                            color : 'cyan'
-                        }
-                    )+' )'
-                );
-            }
-    };
-    /*
      * @private
     */
     const _finalDebugList = function(){
+        $error.setup({
+              'format' : _setup.get('debug_print')
+        });
         if(_debugs.length >0){
             for(let i of _debugs){
                 $stdio.printLn('====');
                 $stdio.printLn(
                     ' '+
-                    i.serial+
+                    (i.serial+1).toString()+
                     '. '+
                     i.name
                 );
-                _debug(i.error);
+                $stdio.printLn(
+                    $error.format(i.error)
+                );
             }
             $stdio.printLn('============');
         }
@@ -387,7 +332,7 @@ const screenBase = function(result_in,  setup_in){
                 )
             );
         return $stdio.printLn(
-            'test time : '+
+            ' test time : '+
             _result.time+
             ' ms'
         );
