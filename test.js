@@ -65,7 +65,7 @@ const $test_missing ={
             'startTime': 11111124,
             'endTime'  : 11111125,
             'time'     : 1,
-            'result'   : 3,
+            'result'   : 4,
             'error'    : false,
             'value'    : '',
             'check'    : false,
@@ -81,8 +81,8 @@ const $test_error ={
             'startTime': 11111124,
             'endTime'  : 11111125,
             'time'     : 1,
-            'result'   : 4,
-            'error'    : false,
+            'result'   : 3,
+            'error'    : Error('sample error'),
             'value'    : '',
             'check'    : false,
             'debug'    : '',
@@ -94,9 +94,10 @@ const setupTest = new setupBase({
             'type'    : 'select',
             'list'    : [
                 'normal',
+                'long',
                 'short'
             ],
-            'default' : 'normal'
+            'default' : 'short'
         },
         'progress_bar':{
             'type'    : 'bool',
@@ -125,7 +126,11 @@ setupTest.setup({
 });
 
 
-const screen = new (require('./index.js')).base($result, setupTest);
+const screen = new (require('./index.js')).base(
+    $result,
+    setupTest
+);
+
 screen.change(
     $result,
     $test_ok
